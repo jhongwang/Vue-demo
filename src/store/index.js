@@ -8,6 +8,7 @@ export default {
     formMsg: {
        city:'全国',
        citycode:'000',
+       curcityarr:[{name:'全国',code:'000'}],
        wd:'请选择维度',
        yw:0,
        rq:'',

@@ -1,5 +1,5 @@
 <template>
-<div class="aui_state_box"  id="aui_state_box" v-if="cbtn" >
+<div class="aui_state_box"  id="aui_state_box" v-show="cbtn" >
 <div class="aui_state_box_bg"></div>
   <div class="aui_alert_zn aui_outer">
     <table class="aui_border" style="border:2px solid #fff;">
@@ -75,7 +75,11 @@
   import {mapState} from 'vuex';
 
   export default {
-    props:['cbtn','curcity','curcode'],
+    props:{
+      cbtn:{
+        default:false
+      }
+    },
     data () {
       return {
         cityNum: 1,
@@ -90,6 +94,7 @@
       }
     },
     computed:{
+       
     },
     methods: {
       cityClose(){
@@ -123,7 +128,9 @@
          return arr;
       }
     },
-    mounted:{
+    updated(){
+    },
+    mounted(){
        this.relations = Vue.__LocalDataCities.relations;
        this.cityList = Vue.__LocalDataCities.list;
        this.hotcitys = this.arrCode(Vue.__LocalDataCities.category.hotcities);

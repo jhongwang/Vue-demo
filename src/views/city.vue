@@ -76,7 +76,7 @@
                     </div>
                 </div>
             </div>
-            <city-box :cbtn='iscbtn' v-on:cityClose='fun_city' v-on:citySure = 'fun_cityresult(arguments[0])'></city-box>
+            <city-box :cbtn='iscbtn' :curcity="msg.curcityarr" v-on:cityClose='fun_city' v-on:citySure = 'fun_cityresult(arguments[0])'></city-box>
         </div>
     </transition>
    </div><!--======== end intro =========-->
@@ -95,6 +95,8 @@
       return {
         msg:{
           city:'',
+          citycode:'',
+          curcityarr:[],
           wd:'',
           yw:0,
           rq:'',
@@ -143,26 +145,18 @@
       },
       init () {
          this.btn = !this.btn;
+         for(var o in this.$store.state.formMsg){
+             this.msg[o] = this.$store.state.formMsg[o] || '';
+         }
       },
       confrim(startTime,endTime) {
           console.log('confirm')
           console.log(startTime);
           console.log(endTime);
-      },
-      async getContent () {
-        //const response = await fetch('/api/hello');
-        //this.content = await response.text();
       }
     },
     mounted () {
        this.init();
-       this.msg.city=this.$store.state.formMsg.city;
-       this.msg.wd=this.$store.state.formMsg.wd;
-       this.msg.yw=this.$store.state.formMsg.yw;
-       this.msg.rq=this.$store.state.formMsg.rq;
-       this.msg.sd=this.$store.state.formMsg.sd;
-       this.msg.pw=this.$store.state.formMsg.pw;
-       this.msg.sq=this.$store.state.formMsg.sq;
      // this.list = this.$store.state.todoList;
      // this.$store.commit('Todo','tomota');
      // this.$store.commit('MESSAGE', '哈哈哈');

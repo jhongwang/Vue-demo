@@ -9,7 +9,7 @@
                         <div class="intro-content">
                             <div class="row">
                                 <div class="col-md-4 col-sm-4 col-xs-4">
-                                    城市：<input type="text" class="cityinput" name="form_city" value='' id="city_login" @click="fun_city"  data-value="" :value="msg.city" :curcity='msg.city' :curcode="msg.citycode">
+                                    城市：<input type="text" class="cityinput" name="form_city" value='' id="city_login" @click="fun_city"  data-value="" :value="msg.city">
                                 </div>
                                 <div class="col-md-4 col-sm-4 col-xs-4">
                                   维度:<input type="text" class="" name="form_wd" v-model="msg.wd" id="form_wd" data-value=""  onclick="appendCity_wd(this,'duoxuan_wd')" />
@@ -20,14 +20,10 @@
                                 <div class="col-md-4 col-sm-4 col-xs-4">
                                     业务: 
                                        <div class="btn-group" v-bind:class="{open:isyw}">
-                                        <button type="button" id="form_yw" name="form_yw" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" @click="fun_yw" v-model="msg.yw" data-value="">
-                                           微信朋友圈签到 <span class="caret"></span>
+                                        <button type="button" id="form_yw" name="form_yw" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" @click="fun_yw"  data-value="">{{msg.ywResult}}<span class="caret"></span>
                                          </button>
                                          <ul class="dropdown-menu form_ul" id="form_yw_ul">
-                                           <li><a href="#" data-value="wechat_friend">微信朋友圈签到</a></li>
-                                           <li><a href="#" data-value="wechat_send">微信发送位置</a></li>
-                                           <li><a href="#" data-value="qq">手q发送位置</a></li>
-                                           <li><a href="#" data-value="qzone">Qzone签到</a></li>
+                                           <li v-for="item in msg.ywselects" @click="ywselectFun(item)"><a href="#">{{item.name}}</a></li>
                                          </ul>
                                        </div> 
                                 </div>
@@ -43,16 +39,10 @@
                                     时段: 
                                         <div class="btn-group" v-bind:class="{open:issd}">
                                           <button type="button" id="form_sd" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" @click="fun_sd" v-model="msg.sd" data-value="0~24">
-                                            全天 00：00 - 24：00 <span class="caret"></span>
+                                            {{msg.sdResult}}<span class="caret"></span>
                                           </button>
                                           <ul class="dropdown-menu form_ul" id="form_sd_ul">
-                                            <li><a href="#" data-value="0~24">全天 00：00 - 24：00</a></li>
-                                            <li><a href="#" data-value="0~7">凌晨 00：00 - 07：00</a></li>
-                                            <li><a href="#" data-value="7~10">早上 07：00 - 10：00</a></li>
-                                            <li><a href="#" data-value="10~12">上午 10：00 - 12：00</a></li>
-                                            <li><a href="#" data-value="12~14">中午 12：00 - 14：00</a></li>
-                                            <li><a href="#" data-value="14~19">下午 14：00 - 19：00</a></li>
-                                            <li><a href="#" data-value="19~24">晚上 19：00 - 24：00</a></li>
+                                            <li v-for="item in msg.sdselects" @click="sdselectFun(item)"><a href="#">{{item.name}}</a></li>
                                           </ul>
                                         </div>
                                 </div>
@@ -77,7 +67,7 @@
                     </div>
                 </div>
             </div>
-            <city-box :cbtn='iscbtn' v-on:cityClose='fun_city' v-on:citySure = 'fun_cityresult(arguments[0])'></city-box>
+            <city-box :cbtn='iscbtn' :curcity="msg.curcityarr" v-on:cityClose='fun_city' v-on:citySure = 'fun_cityresult(arguments[0])'></city-box>
         </div>
     </transition>
    </div><!--======== end intro =========-->
@@ -96,10 +86,15 @@
         msg:{
           city:'',
           citycode:'',
+          curcityarr:[],
           wd:'',
-          yw:0,
+          ywselects:[{name:'微信朋友圈签到',value:'wechat_friend'},{name:'微信发送位置',value:'wechat_send'},{name:'手q发送位置',value:'qq'},{name:'Qzone签到',value:'qzone'}],
+          ywResult:'微信朋友圈签到',
+          ywResultVal:'wechat_friend',
           rq:'',
-          sd:0,
+          sdselects:[{name:'全天 00：00 - 24：00',value:'0~24'},{name:'早上 07：00 - 10：00',value:'7~10'},{name:'上午 10：00 - 12：00',value:'10~12'},{name:'中午 12：00 - 14：00',value:'12~14'},{name:'下午 14：00 - 19：00',value:'14~19'},{name:'晚上 19：00 - 24：00',value:'19~24'}],
+          sdResult:'全天 00：00 - 24：00',
+          sdResultVal:'0~24',
           pw:20,
           sq:''
         },
@@ -118,13 +113,12 @@
          //console.log(this.msg)
          //appendCity(this,'danxuan');
          //console.log(Vue.cityShow('123'))
-        
          //console.log(Vue.doubleNumber)
          this.msg.pw = Vue.doubleNumber(50);
          this.$store.commit('ChangeFormMsg',this.msg);
       },
       fun_city (){
-          this.iscbtn = !this.iscbtn;
+          this.iscbtn = !this.iscbtn;                                                                                                 
           //this.$store.commit('ChangeFormMsgOnly','cbtn',true);
           //Event.$emit('a-msg',this.a);
           //this.$store.commit('ChangeFormMsgOnly','ctype',1);
@@ -140,6 +134,16 @@
          this.isyw = !this.isyw;
       },
       fun_sd () {
+         this.issd = !this.issd;
+      },
+      ywselectFun(val){
+         this.msg.ywResult = val.name;
+         this.msg.ywResultVal = val.value;
+         this.isyw = !this.isyw;
+      },
+      sdselectFun(val){
+         this.msg.sdResult = val.name;
+         this.msg.sdResultVal = val.value;
          this.issd = !this.issd;
       },
       init () {
