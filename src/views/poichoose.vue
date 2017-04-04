@@ -110,6 +110,9 @@
     },
     methods: {
       poi_submit () {
+        this.$router.push({path:'/poi/rank'});//其中login是你定义的一个路由模块
+        //http://10.173.142.164:8080/nearby_data_server/nearby_data.php?city=&category_list=100000|110000|101000_101100&date=20170328~20170331&hour=10~12&num=20&ref=WechatSend&cb=index_load&_=1491037816560
+        //
          //console.log(this.msg)
          //appendCity(this,'danxuan');
          //console.log(Vue.cityShow('123'))
@@ -118,7 +121,7 @@
          this.$store.commit('ChangeFormMsg',this.msg);
       },
       fun_city (){
-          this.iscbtn = !this.iscbtn;                                                                                                 
+          this.iscbtn = !this.iscbtn;
           //this.$store.commit('ChangeFormMsgOnly','cbtn',true);
           //Event.$emit('a-msg',this.a);
           //this.$store.commit('ChangeFormMsgOnly','ctype',1);
