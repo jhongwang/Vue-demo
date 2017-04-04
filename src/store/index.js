@@ -18,6 +18,17 @@ export default {
        ctype:10,  //citybox的选项单选1多选10
        cbtn:false //citybox的显示
     },
+    indexData:{ //首页数据存储
+       zhanshi_data:[],//数据展示数据
+       map_poi:[],//地图POI点绘制数据集合
+       time_xarr:[],//时段图横轴
+       time_yarr:[],//时段图横轴
+       time_xarr_legend:[]//时段图图例
+    },
+    allData:{//批量数据存储s
+       alldata:[]
+
+    },
     poiData:['apple','banana','orange'],
     cateData:['apple','banana','orange'],
     cityData:['apple','banana','orange']
@@ -26,6 +37,11 @@ export default {
     ChangeFormMsg (state,obj) {
        for(var o in obj){
          state.formMsg[o] = obj[o] || '';
+       }
+    },
+    ChangeIndexMsg (state,obj) {
+       for(var o in obj){
+         state.indexData[o] = obj[o] || '';
        }
     },
     ChangeFormMsgOnly(state,o,value){

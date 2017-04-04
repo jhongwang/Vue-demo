@@ -3,7 +3,10 @@
   <transition enter-active-class="animated fadeIn" leave-active-class="animated zoomOutRight">
         <div v-show="btn">
              <div class="container">
-                 <h1>rank</h1>
+                 <div v-for="(item,index) in list"  v-if="!(index%2)" v-bind:class="{row:!index%2}">
+                     <div class="col-md-6 col-sm-8 col-xs-12"><div class="media"><div id="index" class="canvas_charts" v-bind:style="{maxHeight:numHeight+'px',color:'#f00'}">{{index}}</div></div></div>
+                     <div v-if="(index+1)<list.length" class="col-md-6 col-sm-8 col-xs-12"><div class="media"><div id="index+1" class="canvas_charts" v-bind:style="{maxHeight:numHeight+'px',color:'#f00'}">{{index+1}}</div></div></div>
+                 </div>
              </div>
         </div>
  </transition>
@@ -17,19 +20,24 @@
   export default {
     data () {
       return {
-        mes:'',
         list:[],
-        btn:false
+        btn:false,//控制界面显示
+        numHeight:730
       }
     },
     methods: {
-      async getContent () {
-        //const response = await fetch('/api/hello');
-        //this.content = await response.text();
-      }
+      
     },
     mounted () {
+      console.log(this.btn)
       this.btn = !this.btn;
+      this.numHeight = this.$store.state.formMsg.pw>30?730:530;
+      console.log('以下是rank的数据')
+      this.list = this.$store.state.indexData.zhanshi_data;
+      console.log(this.$store.state.formMsg)
+      console.log(this.$store.state.indexData)
+      console.log(this.btn)
+      console.log(this.list)
      // this.mes=this.$store.state.message;
      // this.list = this.$store.state.todoList;
      // this.$store.commit('Todo','tomota');

@@ -111,7 +111,6 @@
     methods: {
       poi_submit () {
         var self = this;
-        self.$router.push({path:'/poi/rank'});//其中login是你定义的一个路由模块
         var url='https://apis.map.qq.com/ws/place/v1/search?output=jsonp&boundary=region(%E5%8C%97%E4%BA%AC,0)&keyword=%E6%88%90%E9%83%BD&page_size=20&page_index=1&orderby=_distance&key=WC4BZ-TFI24-M45UM-DI57V-SVUH3-LQFUV';
         $.ajax({
               type:'get',
@@ -143,9 +142,79 @@
          self.msg.pw = Vue.doubleNumber(50);
          self.$store.commit('ChangeFormMsg',this.msg);
       },
-      draw_data (data){
-         console.log('暂时是模拟的数据');
-        console.log(data)
+      draw_data (totalData){
+        var self =this;
+        console.log('暂时是模拟的数据');
+        var indexData={ //首页数据存储
+           zhanshi_data:[],//数据展示数据
+           map_poi:[],//地图POI点绘制数据集合
+           time_xarr:[],//时段图横轴
+           time_yarr:[],//时段图横轴
+           time_xarr_legend:[]//时段图图例
+        };
+        //var time = totalData[0].group_info.group_hour.split('~');
+        var time =[7,10];
+        if(Number(time[1]) == 24){
+            var end_time = 24;
+        }else{
+            var end_time = Number(time[1])+1;
+        }
+        for(var i = Number(time[0]);i<end_time;i++){
+           indexData.time_xarr.push(i);
+        }
+        for(var i =0;i<totalData.length;i++){
+            //数据展示图数据集合
+            var obj = {};
+            var category_name;
+            if(totalData[i].group_info.group_category.indexOf('_')==-1){
+                category_name = Vue.__LocalDataCities_wd.list[totalData[i].group_info.group_category][0];
+            }else{
+                category_name = '';
+                var arr = totalData[i].group_info.group_category.split('_');
+                for(var j = 0 ;j<arr.length;j++){
+                    category_name += Vue.__LocalDataCities_wd.list[arr[j]][0]+'、';
+                }
+                category_name = category_name.slice(0,-1);
+            }
+            if(totalData[i].group_info.group_city){
+              obj.text = Vue.__LocalDataCities_wd.city_Codes_name[totalData[i].group_info.group_city]+'用户最乐于分享的'+category_name+'排名';
+            }else{
+              obj.text = '全国用户最乐于分享的'+category_name+'排名';
+           }
+            obj.data = totalData[i].poi_list;
+            indexData.zhanshi_data.push(obj);
+            //时段图数据集合
+            var obj_time = {};
+            obj_time.type = "bar";
+            obj_time.name = category_name;
+            indexData.time_xarr_legend.push(category_name);
+            obj_time.data = [];
+            for(var k = 0;k<indexData.time_xarr.length;k++){
+               obj_time.data.push(totalData[i].hour_map[indexData.time_xarr[k]]);
+            }
+            indexData.time_yarr.push(obj_time);
+            //地图POI点绘制数据集合
+            var poi = totalData[i].poi_list;
+            var map_arr=[];
+            for(var m=0;m<poi.length;m++){
+               var obj_map ={};
+               obj_map.name = poi[m].name;
+               obj_map.value = [poi[m].longitude,poi[m].latitude,poi[m].click_num];
+               obj_map.serie = category_name;
+               map_arr.push(obj_map);
+            }
+            indexData.map_poi.push(map_arr);
+
+        }
+        self.$store.commit('ChangeIndexMsg',indexData);
+        console.log(indexData.zhanshi_data)//数据展示数据
+        console.log(indexData.map_poi)//地图POI点绘制数据集合
+        console.log(indexData.time_xarr)//时段图横轴
+        console.log(indexData.time_xarr_legend)//时段图图例
+        console.log('下面是储存的数据');
+        console.log(self.$store.state.formMsg)
+        console.log(self.$store.state.indexData)
+        self.$router.push({path:'/poi/rank'});
       },
       fun_city (){
           this.iscbtn = !this.iscbtn;
