@@ -11,11 +11,13 @@ import $ from 'jquery';
 
 //外界引入js
 //import date from './assets/js/vue.datepicker.js';
-import ci from './assets/js/ci.js';
+import ci from './assets/js/ci.js';//临时
 import cityData from './assets/js/City_data.js';
+import beijing from './assets/js/beijing.js';//临时
 //import cityDataUse from './assets/js/areadata.js';
-Vue.use(ci);
+Vue.use(ci);//临时
 Vue.use(cityData);
+Vue.use(beijing);//临时
 //Vue.use(cityDataUse);
 //Vue.use(date);
 

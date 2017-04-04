@@ -10,7 +10,7 @@ export default {
      Vue.doubleNumber = function (val) {
      	   console.log('这里可以引入外界的c')
 		    if (typeof val === 'number') {
-		        return a(val * 2);
+		        return val*2+1;
 		    } else if (!isNaN(Number(val))) {
 		        return Number(val) * 2;
 		    } else {

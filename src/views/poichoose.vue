@@ -79,7 +79,7 @@
   const dateBoxing = r => require(['views/dateBoxing'], r);
   //import {ajs} from 'assets/js/ci.js';
   //准备一个空的实例对象
-  var Event=new Vue();
+  //var Event=new Vue();
   export default {
     data () {
       return {
@@ -110,15 +110,42 @@
     },
     methods: {
       poi_submit () {
-        this.$router.push({path:'/poi/rank'});//其中login是你定义的一个路由模块
+        var self = this;
+        self.$router.push({path:'/poi/rank'});//其中login是你定义的一个路由模块
+        var url='https://apis.map.qq.com/ws/place/v1/search?output=jsonp&boundary=region(%E5%8C%97%E4%BA%AC,0)&keyword=%E6%88%90%E9%83%BD&page_size=20&page_index=1&orderby=_distance&key=WC4BZ-TFI24-M45UM-DI57V-SVUH3-LQFUV';
+        $.ajax({
+              type:'get',
+              url:url,
+              dataType:'jsonp',
+              jsonpCallback:'cb',
+              success:function(res){
+                if(res){
+                  //console.log('返回来的数据')
+                  //console.log(res)
+                  res = Vue.beijing;
+                  self.draw_data(res);
+                }
+                
+
+              },
+              error:function(){
+
+              }
+        });
+       // this.draw_data(Vue.beijing) 
+
         //http://10.173.142.164:8080/nearby_data_server/nearby_data.php?city=&category_list=100000|110000|101000_101100&date=20170328~20170331&hour=10~12&num=20&ref=WechatSend&cb=index_load&_=1491037816560
-        //
+        //http://apis.map.qq.com/ws/place/v1/search?output=jsonp&boundary=region(北京,0)&keyword=成都&page_size=20&page_index=1&orderby=_distance&key=WC4BZ-TFI24-M45UM-DI57V-SVUH3-LQFUV
          //console.log(this.msg)
          //appendCity(this,'danxuan');
          //console.log(Vue.cityShow('123'))
          //console.log(Vue.doubleNumber)
-         this.msg.pw = Vue.doubleNumber(50);
-         this.$store.commit('ChangeFormMsg',this.msg);
+         self.msg.pw = Vue.doubleNumber(50);
+         self.$store.commit('ChangeFormMsg',this.msg);
+      },
+      draw_data (data){
+         console.log('暂时是模拟的数据');
+        console.log(data)
       },
       fun_city (){
           this.iscbtn = !this.iscbtn;
