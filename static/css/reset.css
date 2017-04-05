@@ -11,6 +11,9 @@
     font-family: 'Microsoft Yahei',Arial,Source Sans Pro, Helvetica, sans-serif;
     text-align: center;
   }
+  ul,li{
+    list-style:none;
+  }
   a {
     color: #42b983;
     font-weight: 700;

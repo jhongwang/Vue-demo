@@ -49,13 +49,20 @@
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" rel="stylesheet/scss" scoped>
   .poi_nav{
-    position:absolute;
+    position:fixed;
     right:10px;
     top:50%;
     z-index:998;
+    li{
+      margin:2px 0;
+      a{
+        color:#1fbf8f;
+      }
+    }
+
   }
   .poi_nav a.router-link-active{
-     color:#f00;
+     color:#01f2aa;
      font-size:16px;
   }
 </style>
