@@ -62,7 +62,9 @@
 
   }
   .poi_nav a.router-link-active{
-     color:#01f2aa;
-     font-size:16px;
+     color:#275547;
+     font-size:15px;
+     font-weight:700;
   }
+  
 </style>

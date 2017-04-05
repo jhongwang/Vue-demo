@@ -3,13 +3,19 @@
   <transition enter-active-class="animated fadeIn" leave-active-class="animated zoomOutRight">
     <div>
         <div v-show="btn">
+               <div class="row">
+                    <div class="col-md-8 col-md-offset-2 text-center">  
+                        <h2 class="section-title" style="font-size:26px;font-weight:700;color:#496174">签到排名</h2>
+                        <p style="font-size:12px;font-weight:400;margin-bottom:30px;color:#999;">Sign data display diagram can export the current page, as well as batch export watermark.</p>
+                    </div>
+                </div> 
              <div class="containerbox" id="rankBox">
                  <div v-for="(item,index) in listNew"  v-if="!(index%2)" v-bind:class="{row:!index%2}">
                      <div class="col-md-6 col-sm-8 col-xs-12" style="margin-bottom:30px;">
                        <div class="media">
                          <div id="index" class="canvas_charts" v-bind:style="{maxHeight:numHeight+'px',color:'#f00',minHeight:'400px',width:'100%'}">
                            <div class="echart" v-bind:style="{width:'100%',height:style.height}">
-                             <i-echarts  :option="item.showData" :loading="loading" :resizable="true" ></i-echarts>
+                             <i-echarts  v-if="btn" :option="item.showData" :loading="loading" :resizable="true" ></i-echarts>
                            </div>
                          </div>
                        </div>
@@ -18,7 +24,7 @@
                        <div class="media">
                          <div id="index+1" class="canvas_charts" v-bind:style="{maxHeight:numHeight+'px',color:'#f00'}">
                            <div class="echart" v-bind:style="{width:'100%',height:style.height}">
-                             <i-echarts  :option="list[index+1].showData" :loading="loading" :resizable="true" ></i-echarts>
+                             <i-echarts v-if="btn" :option="list[index+1].showData" :loading="loading" :resizable="true" ></i-echarts>
                            </div>
                          </div>
                        </div>
@@ -206,7 +212,7 @@
       this.numHeight = this.$store.state.formMsg.pw>30?730:530;
       console.log('以下是rank的数据')
       this.list = this.$store.state.indexData.zhanshi_data;
-      this.btn = this.list.length>1?(!this.btn):(this.btn);
+      this.btn = this.list.length>0?(!this.btn):(this.btn);
       console.log(this.$store.state.formMsg)
       console.log(this.$store.state.indexData)
       console.log(this.btn)
