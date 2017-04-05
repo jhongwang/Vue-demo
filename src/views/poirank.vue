@@ -183,7 +183,7 @@
                     bounding: 'raw',
                     origin: [75, 75],
                     style: {
-                        image: '../assets/images/logo.png',
+                        image: '../static/images/logo.png',
                         width: 249,
                         height: 36,
                         opacity: 0.1

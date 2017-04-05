@@ -139,7 +139,7 @@
          //appendCity(this,'danxuan');
          //console.log(Vue.cityShow('123'))
          //console.log(Vue.doubleNumber)
-         self.msg.pw = Vue.doubleNumber(50);
+         //self.msg.pw = Vue.doubleNumber(50);
          self.$store.commit('ChangeFormMsg',this.msg);
       },
       draw_data (totalData){

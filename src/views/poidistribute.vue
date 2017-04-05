@@ -10,7 +10,7 @@
                     </div>
                 </div> 
              <div class="containerbox" id="rankBox">
-                <div v-for="(item,index) in listNewC"  v-if="!(index%2)">
+                <div v-for="(item,index) in mapShow"  v-if="!(index%2)">
                      <div class="col-md-6 col-sm-8 col-xs-12" style="margin-bottom:30px;">
                        <div class="media">
                          <div id="index" class="canvas_charts" v-bind:style="{maxHeight:numHeight+'px',color:'#f00',minHeight:'400px',width:'100%'}">
@@ -45,16 +45,18 @@
 </template>
 
 <script>
-
+  import Vue from 'vue';
   import {mapState} from 'vuex';
   const IEcharts = r => require(['views/chartfull'], r);
-
   export default {
     data () {
       return {
-        list:[],
+        list:[],//time时段图
+        maplist:[],//map图数据
         btn:false,//控制界面显示
         numHeight:530,
+        mapCity:'',//选中的城市或者省份名字
+        mapCode:'',//为了获取省份里面某个城市的code 从而获得所属省份名称
         loading: false,
         style: {width:'100%',height:'530px'},
         bar: {
@@ -137,7 +139,7 @@
                       bounding: 'raw',
                       origin: [75, 75],
                       style: {
-                          image: './assets/images/logo.png',
+                          image: './static/images/logo.png',
                           width: 249,
                           height: 36,
                           opacity: 0.1
@@ -152,6 +154,26 @@
         console.log('arr_new')
         console.log(arr_new)
         return arr_new;
+      },
+      mapShow(){
+         console.log('a')
+         if(this.mapCity){
+           console.log('b')
+           console.log(this.mapCity)
+           var type;
+           if(this.mapCity == '全国'){
+              type = 'china';
+           }else{
+              var city_myCode = this.mapCode.slice(0,3); //得到省的前三位字符串 050 广东省
+            console.log('mycode')
+           console.log(this.mapCode)
+              var city_myCode_province = Vue.__LocalDataCities.list[city_myCode][0].slice(0,2); //得到广东二字
+              type = Vue.__LocalDataCities.city_names[city_myCode_province];
+           }
+           console.log('mapshow')
+           console.log(type)
+           Vue.setMap(type,this.maplist);
+         }
       }
     },
     methods: {
@@ -167,12 +189,19 @@
       if(this.$store.state.indexData.time_xarr&&this.$store.state.indexData.time_xarr.length>0){
         this.list.push({xarr:this.$store.state.indexData.time_xarr,yarr:this.$store.state.indexData.time_yarr,xarr_legend:this.$store.state.indexData.time_xarr_legend});
       }
+      if(this.$store.state.indexData.map_poi&&this.$store.state.indexData.map_poi.length>0){
+        this.maplist = this.$store.state.indexData.map_poi;
+        this.mapCity = this.$store.state.formMsg.curcityarr[0].name;
+        this.mapCode = this.$store.state.formMsg.curcityarr[0].code;
+      }
+      console.log(this.mapCode)
       this.btn = this.list.length>0?(!this.btn):(this.btn);
       console.log(this.$store.state.formMsg)
       console.log(this.$store.state.indexData)
       console.log(this.btn)
-
       console.log(this.list)
+      console.log('maplist')
+      console.log(this.mapCity)
      // this.mes=this.$store.state.message;
      // this.list = this.$store.state.todoList;
      // this.$store.commit('Todo','tomota');
