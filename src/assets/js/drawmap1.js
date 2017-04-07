@@ -1,4 +1,3 @@
-
 export default {
   install: function (Vue, options) {
      //添加的js内容写在这里面 
@@ -6,19 +5,22 @@ export default {
      Vue.doubleNumber = function (val) {
      	   console.log('这里可以引入外界的c')
      };
-     Vue.setMap = function(map_type,data){
-
+     Vue.setMap = function(map_type,dataVal){
+      //data里面包含了多个系列
     alert('a1')
     console.log('a1')
-    console.log(data)
+    console.log(dataVal)
     var series_data=[];
     var max=0;
     var min=0;
-    for(var i =0;i<data.length;i++){
+    var num=20;
+    var legend=[];
+    for(var i =0;i<dataVal.length;i++){
         var obj = {
-            type: 'scatter',
-            coordinateSystem: 'geo',
-            data: data[i],
+            name:dataVal[i][0].serie,
+            type: 'map',
+            mapType:map_type,
+            data: dataVal[i],
             symbolSize: 12,
             label: {
                 normal: {
@@ -30,22 +32,53 @@ export default {
                     show: false
                 }
             },
-            itemStyle: {
-                emphasis: {
-                    borderColor: '#fff',
-                    borderWidth: 1
+            itemStyle:{
+                normal:{
+                    borderColor:'rgba(100,149,237,1)',
+                    borderWidth:1.5,
+                    areaStyle:{
+                        color: '#1b1b1b'
+                    }
                 }
+            },
+             data : [],
+             markPoint : {
+                symbolSize: 2,
+                large: true,
+                effect : {
+                    show: true
+                },
+                data : (function(){
+                    var data = [];
+                    var len = dataVal[i].length;
+                    var geoCoord
+                    while(len--) {
+                        data.push({
+                            name : dataVal[i][len].name,
+                            value : (dataVal[i][len].value)[2],
+                            geoCoord : [
+                                (dataVal[i][len].value)[0] + Math.random() * 5 - 2.5,
+                                (dataVal[i][len].value)[1] + Math.random() * 3 - 1.5
+                            ]
+                        })
+                    }
+                    return data;
+                })()
             }
         };
-        obj.name = data[i][0].serie;
+        num+=20;
+        obj.name = dataVal[i][0].serie;
+        legend.push(dataVal[i][0].serie);
         series_data.push(obj);
-        for(var k =0;k<data[i].length;k++){
-            var n = data[i][k].value[2];
+        for(var k =0;k<dataVal[i].length;k++){
+            var n = dataVal[i][k].value[2];
             max = Math.max(max,n);
             min = Math.min(min,n);
         }
     };
+  
     var option={
+        backgroundColor: '#1b1b1b',
         title: {
             text: '签到地域分布图',
             x:'center',
@@ -53,13 +86,22 @@ export default {
                 color: '#111'
             }
         },
-        tooltip: {
+        color: ['#00f0ff', '#ffd200', '#f00'],
+        legend:{
+                orient: 'vertical',
+                x:'left',
+                data:legend,
+                textStyle : {
+                    color: '#f00'
+                }
+        },
+        /*tooltip: {
             trigger: 'item',
             formatter: function (params) {
                 return params.name + ' : ' + params.value[2];
             }
-        },
-        visualMap: {
+        },*/
+        /*visualMap: {
             min: min,
             max: max,
             calculable: true,
@@ -69,8 +111,8 @@ export default {
             textStyle: {
                 color: '#111'
             }
-        },
-        geo: {
+        },*/
+        /*geo: {
             map: map_type,
             roam:true,
             label: {
@@ -87,8 +129,8 @@ export default {
                     areaColor: '#c6deff'
                 }
             }
-        },
-        series: series_data,
+        },*/
+           series: series_data,
            graphic: [
                 {
                     type: 'image',
@@ -105,11 +147,12 @@ export default {
                         opacity: 0.3
                     }
                 }
-            ]
+          ]
         };
+        console.log('option obj')
         console.log(option)
         return option;
-   };
+   }
      //Vue.prototype.doubleNumber = new doubleNumber();
   }
 };

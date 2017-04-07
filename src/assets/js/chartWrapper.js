@@ -51,6 +51,10 @@ exports = module.exports = function wrapECharts(ECharts, Resize, Debounce) {
           };
         }
       },
+      mType:{
+        type: String,
+        required: false
+      },
       theme: {
         type: String,
         required: false
@@ -100,7 +104,8 @@ exports = module.exports = function wrapECharts(ECharts, Resize, Debounce) {
         watches: {
           loading: null,
           option: null,
-          group: null
+          group: null,
+          mType: null
         }
       };
     },
@@ -121,6 +126,14 @@ exports = module.exports = function wrapECharts(ECharts, Resize, Debounce) {
         cache: false,
         get: function get() {
           return this.instance.isDisposed();
+        }
+      },
+      isMap: {
+        cache: false,
+        get: function get(){
+          if(this.mType){
+             this.getMap(this.mType);
+          }
         }
       }
     },

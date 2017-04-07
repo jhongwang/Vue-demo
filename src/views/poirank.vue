@@ -13,7 +13,7 @@
                  <div v-for="(item,index) in listNew"  v-if="!(index%2)" v-bind:class="{row:!index%2}">
                      <div class="col-md-6 col-sm-8 col-xs-12" style="margin-bottom:30px;">
                        <div class="media">
-                         <div id="index" class="canvas_charts" v-bind:style="{maxHeight:numHeight+'px',color:'#f00',minHeight:'400px',width:'100%'}">
+                         <div id="index" class="canvas_charts" v-bind:style="{color:'#f00',minHeight:'400px',width:'100%'}">
                            <div class="echart" v-bind:style="{width:'100%',height:style.height}">
                              <i-echarts  v-if="btn" :option="item.showData" :loading="loading" :resizable="true" ></i-echarts>
                            </div>
@@ -22,7 +22,7 @@
                      </div>
                      <div v-if="(index+1)<list.length" class="col-md-6 col-sm-8 col-xs-12">
                        <div class="media">
-                         <div id="index+1" class="canvas_charts" v-bind:style="{maxHeight:numHeight+'px',color:'#f00'}">
+                         <div id="index+1" class="canvas_charts" v-bind:style="{color:'#f00'}">
                            <div class="echart" v-bind:style="{width:'100%',height:style.height}">
                              <i-echarts v-if="btn" :option="list[index+1].showData" :loading="loading" :resizable="true" ></i-echarts>
                            </div>

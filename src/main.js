@@ -4,6 +4,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import VueRouter from 'vue-router';
+import AsyncComputed from 'vue-async-computed';
 import App from './app';
 import routes from './routes';
 import storeOption from './store';
@@ -15,7 +16,7 @@ import $ from 'jquery';
 import cityData from './assets/js/City_data.js';
 import wdData from './assets/js/wd_data.js';
 import beijing from './assets/js/beijing.js';//临时
-import map from './assets/js/drawmap.js';//临时
+import map from './assets/js/drawmap1.js';//临时
 //import cityDataUse from './assets/js/areadata.js';
 //Vue.use(ci);//临时
 Vue.use(wdData);
@@ -28,6 +29,7 @@ Vue.use(map);
 
 Vue.use(Vuex);
 Vue.use(VueRouter);
+Vue.use(AsyncComputed);
 
 // 创建一个路由对象用于管理页面的路由
 const router = new VueRouter({

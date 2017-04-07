@@ -10,28 +10,30 @@
                     </div>
                 </div> 
              <div class="containerbox" id="rankBox">
-                <div v-for="(item,index) in mapShow"  v-if="!(index%2)">
+               <div v-for="(item,index) in listNewC"  v-if="!(index%2)">
+                    <div class="col-md-6 col-sm-8 col-xs-12" style="margin-bottom:30px;">
+                      <div class="media">
+                        <div id="index" class="canvas_charts" v-bind:style="{color:'#f00',minHeight:'400px',width:'100%'}">
+                          <div class="echart" v-bind:style="{width:'100%',height:style.height}">
+                            <i-echarts  :option="item" :loading="loading" :mType="mapCityType"  :resizable="true" ></i-echarts>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+                <!-- <div>{{mapShow}}</div>
+                 <div v-for="(item,index) in mapShow"  v-if="!(index%2)">
                      <div class="col-md-6 col-sm-8 col-xs-12" style="margin-bottom:30px;">
                        <div class="media">
-                         <div id="index" class="canvas_charts" v-bind:style="{maxHeight:numHeight+'px',color:'#f00',minHeight:'400px',width:'100%'}">
+                         <div id="index" class="canvas_charts" v-bind:style="{color:'#f00',minHeight:'400px',width:'100%'}">
+                          <div>{{item}}</div>
                            <div class="echart" v-bind:style="{width:'100%',height:style.height}">
                              <i-echarts  :option="item" :loading="loading" :resizable="true" ></i-echarts>
                            </div>
                          </div>
                        </div>
                      </div>
-                 </div>
-                 <div v-for="(item,index) in listNewC"  v-if="!(index%2)">
-                     <div class="col-md-6 col-sm-8 col-xs-12" style="margin-bottom:30px;">
-                       <div class="media">
-                         <div id="index" class="canvas_charts" v-bind:style="{maxHeight:numHeight+'px',color:'#f00',minHeight:'400px',width:'100%'}">
-                           <div class="echart" v-bind:style="{width:'100%',height:style.height}">
-                             <i-echarts  :option="item" :loading="loading" :resizable="true" ></i-echarts>
-                           </div>
-                         </div>
-                       </div>
-                     </div>
-                 </div>
+                 </div> -->
              </div>
         </div>
         <div v-show="!btn">
@@ -46,7 +48,6 @@
 
 <script>
   import Vue from 'vue';
-  import {mapState} from 'vuex';
   const IEcharts = r => require(['views/chartfull'], r);
   export default {
     data () {
@@ -56,6 +57,7 @@
         btn:false,//控制界面显示
         numHeight:530,
         mapCity:'',//选中的城市或者省份名字
+        mapCityType:'',
         mapCode:'',//为了获取省份里面某个城市的code 从而获得所属省份名称
         loading: false,
         style: {width:'100%',height:'530px'},
@@ -151,29 +153,40 @@
              color:['#DC580F','#00D037','#D91749','#099DDB']
           });
         }
-        console.log('arr_new')
-        console.log(arr_new)
-        return arr_new;
-      },
-      mapShow(){
-         console.log('a')
-         if(this.mapCity){
+        if(this.mapCity){
            console.log('b')
            console.log(this.mapCity)
            var type;
            if(this.mapCity == '全国'){
               type = 'china';
+              this.mapCityType = 'chian';
            }else{
               var city_myCode = this.mapCode.slice(0,3); //得到省的前三位字符串 050 广东省
             console.log('mycode')
            console.log(this.mapCode)
               var city_myCode_province = Vue.__LocalDataCities.list[city_myCode][0].slice(0,2); //得到广东二字
               type = Vue.__LocalDataCities.city_names[city_myCode_province];
+              this.mapCityType = Vue.__LocalDataCities.city_names[city_myCode_province];
            }
            console.log('mapshow')
            console.log(type)
-           Vue.setMap(type,this.maplist);
-         }
+           console.log('arr_new1')
+            var map = Vue.setMap(type,this.maplist);//option{}
+            arr_new.push(map);
+            console.log(arr_new)
+            return arr_new;
+          }else{
+            console.log('arr_new2')
+            console.log(arr_new)
+             return arr_new;
+          }
+        
+        
+         
+           
+      },
+      mapShow(){
+         
       }
     },
     methods: {
@@ -202,6 +215,8 @@
       console.log(this.list)
       console.log('maplist')
       console.log(this.mapCity)
+
+
      // this.mes=this.$store.state.message;
      // this.list = this.$store.state.todoList;
      // this.$store.commit('Todo','tomota');
@@ -213,7 +228,13 @@
     }
 
   }
-
+  /* $.get('../static/city_json/'+type+'.json', function (chinaJson) {
+                console.log('aaaaa')
+                console.log(IEcharts)
+                console.log(IEcharts.name)
+                console.log(IEcharts().registerMap())
+                 IEcharts.registerMap(type, chinaJson);
+              });*/
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -221,4 +242,6 @@
 .intro{
   height:auto;
 } 
+
 </style>
+

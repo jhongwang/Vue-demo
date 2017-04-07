@@ -1,5 +1,5 @@
 <template>
-  <div :class="className" :style="style"></div>
+  <div :class="className" :style="style" :mType="mType"></div>
 </template>
 
 <style scoped>

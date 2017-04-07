@@ -17,6 +17,7 @@
     "es6-promise": "^4.0.5",
     "lodash.debounce": "^4.0.8",
     "vue": "^2.0.1",
+    "vue-async-computed": "^3.0.1",
     "vue-router": "^2.0.1",
     "vuex": "^2.0.0",
     "whatwg-fetch": "^1.0.0"
